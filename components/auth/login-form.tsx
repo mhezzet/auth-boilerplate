@@ -8,6 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { LoginSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -18,6 +19,9 @@ export const LoginForm: React.FC<ILoginForm> = ({}) => {
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState<string | undefined>("");
   const [successMessage, setSuccessMessage] = useState<string | undefined>("");
+  const searchParams = useSearchParams();
+  const urlLinAccountError =
+    searchParams.get("error") === "OAuthAccountNotLinked" ? "Email already in use with different provider!" : "";
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -77,7 +81,7 @@ export const LoginForm: React.FC<ILoginForm> = ({}) => {
                 </FormItem>
               )}
             />
-            <FormErrors message={errorMessage} />
+            <FormErrors message={errorMessage || urlLinAccountError} />
             <FormSuccess message={successMessage} />
             <Button disabled={isPending} type="submit" className="w-full">
               Login
