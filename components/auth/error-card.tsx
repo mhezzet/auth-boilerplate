@@ -1,7 +1,4 @@
-import { Card, CardFooter, CardHeader } from "@/components/ui/card";
-import { AuthCardHeader } from "@/components/auth/header";
-import { BackButton } from "@/components/auth/back-button";
-import { CardContainer } from "./card-container";
+import { CardContainer } from "@/components/auth/card-container";
 
 interface IErrorCard {}
 
