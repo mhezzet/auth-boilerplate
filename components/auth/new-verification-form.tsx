@@ -46,7 +46,6 @@ export const NewVerificationForm: React.FC<INewVerificationForm> = ({}) => {
     >
       <div className="flex w-full items-center justify-center">
         {!success && !error && <BeatLoader />}
-        <FormSuccess message={success} />
         <FormSuccess message={verified ? 'Email Verified!' : ''} />
         {!verified && <FormErrors message={error} />}
       </div>
