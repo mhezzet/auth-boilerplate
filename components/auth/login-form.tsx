@@ -20,6 +20,7 @@ export const LoginForm: React.FC<ILoginForm> = ({}) => {
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState<string | undefined>("");
   const [successMessage, setSuccessMessage] = useState<string | undefined>("");
+  const [showTwoFactor, setShowTwoFactor] = useState(false);
   const searchParams = useSearchParams();
   const urlLinAccountError =
     searchParams.get("error") === "OAuthAccountNotLinked" ? "Email already in use with different provider!" : "";
@@ -30,18 +31,38 @@ export const LoginForm: React.FC<ILoginForm> = ({}) => {
       email: "",
       password: "",
     },
+    shouldUnregister: false,
   });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setErrorMessage("");
     setSuccessMessage("");
 
-    startTransition(() =>
-      login(values).then((data) => {
-        setErrorMessage(data.error);
-        setSuccessMessage(data.success);
-      })
-    );
+    startTransition(async () => {
+      const { error, success, twoFactor, email, password } = await login(values);
+
+      if (error) {
+        form.reset();
+        setErrorMessage(error);
+      }
+
+      if (success) {
+        form.reset();
+        setSuccessMessage(success);
+      }
+
+      if (email) {
+        form.setValue("email", email);
+      }
+
+      if (password) {
+        form.setValue("password", password);
+      }
+
+      if (twoFactor) {
+        setShowTwoFactor(true);
+      }
+    });
   };
 
   return (
@@ -54,41 +75,62 @@ export const LoginForm: React.FC<ILoginForm> = ({}) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              disabled={isPending}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="john.doe@example.com" type="email" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              disabled={isPending}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="******" type="password" />
-                  </FormControl>
-                  <Button variant="link" asChild size="sm" className="px-0 font-normal">
-                    <Link href="/auth/reset">Forgot password?</Link>
-                  </Button>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {showTwoFactor && (
+              <FormField
+                control={form.control}
+                name="code"
+                disabled={isPending}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Two Factor Code</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="123456" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+            {!showTwoFactor && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  disabled={isPending}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="john.doe@example.com" type="email" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  disabled={isPending}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="******" type="password" />
+                      </FormControl>
+                      <Button variant="link" asChild size="sm" className="px-0 font-normal">
+                        <Link href="/auth/reset">Forgot password?</Link>
+                      </Button>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+
             <FormErrors message={errorMessage || urlLinAccountError} />
             <FormSuccess message={successMessage} />
             <Button disabled={isPending} type="submit" className="w-full">
-              Login
+              {showTwoFactor ? "Confirm" : "Login"}
             </Button>
           </div>
         </form>

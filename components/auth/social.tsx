@@ -9,7 +9,6 @@ interface ISocial {}
 
 export const Social: React.FC<ISocial> = ({}) => {
   const onClick = (provider: "google" | "github") => () => {
-    console.log("clicked", provider);
     signIn(provider);
   };
 
