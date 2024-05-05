@@ -39,27 +39,27 @@ export const LoginForm: React.FC<ILoginForm> = ({}) => {
     setSuccessMessage("");
 
     startTransition(async () => {
-      const { error, success, twoFactor, email, password } = await login(values);
+      const response = await login(values);
 
-      if (error) {
+      if (response?.error) {
         form.reset();
-        setErrorMessage(error);
+        setErrorMessage(response?.error);
       }
 
-      if (success) {
+      if (response?.success) {
         form.reset();
-        setSuccessMessage(success);
+        setSuccessMessage(response?.success);
       }
 
-      if (email) {
-        form.setValue("email", email);
+      if (response?.email) {
+        form.setValue("email", response?.email);
       }
 
-      if (password) {
-        form.setValue("password", password);
+      if (response?.password) {
+        form.setValue("password", response?.password);
       }
 
-      if (twoFactor) {
+      if (response?.twoFactor) {
         setShowTwoFactor(true);
       }
     });

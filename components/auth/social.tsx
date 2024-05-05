@@ -9,7 +9,7 @@ interface ISocial {}
 
 export const Social: React.FC<ISocial> = ({}) => {
   const onClick = (provider: "google" | "github") => () => {
-    signIn(provider);
+    signIn(provider, { callbackUrl: DEFAULT_LOGIN_REDIRECT });
   };
 
   return (
