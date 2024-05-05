@@ -24,6 +24,7 @@ export const LoginForm: React.FC<ILoginForm> = ({}) => {
   const searchParams = useSearchParams();
   const urlLinAccountError =
     searchParams.get("error") === "OAuthAccountNotLinked" ? "Email already in use with different provider!" : "";
+  const callbackUrl = searchParams.get("callbackUrl");
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -39,7 +40,7 @@ export const LoginForm: React.FC<ILoginForm> = ({}) => {
     setSuccessMessage("");
 
     startTransition(async () => {
-      const response = await login(values);
+      const response = await login(values, callbackUrl);
 
       if (response?.error) {
         form.reset();

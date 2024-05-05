@@ -14,7 +14,7 @@ export default async function Home() {
       <div className="space-y-6 text-center">
         <h1 className={cn("text-6xl font-semibold text-white drop-shadow-md", poppinsFont.className)}>🔐Auth</h1>
         <p className="text-white text-lg">A Simple authentication service</p>
-        <LoginButton variant="secondary" size="lg">
+        <LoginButton variant="secondary" size="lg" asChild>
           Sign in
         </LoginButton>
       </div>
