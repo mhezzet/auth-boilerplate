@@ -1,4 +1,3 @@
 {
-  "*/**/*.{js,jsx,ts,tsx}": ["prettier --write", "next lint"],
-  "*/**/*.{json,css,md}": ["prettier --write"]
+  "**/*.{js,jsx,ts,tsx,json,css,md}": ["npm run format"]
 }
