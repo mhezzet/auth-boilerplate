@@ -1,15 +1,15 @@
-import authConfig from "@/auth.config";
-import { getAccountByUserId } from "@/data/account";
-import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
-import { getUserById } from "@/data/user";
-import { db } from "@/lib/db";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import NextAuth from "next-auth";
+import authConfig from '@/auth.config';
+import { getAccountByUserId } from '@/data/account';
+import { getTwoFactorConfirmationByUserId } from '@/data/two-factor-confirmation';
+import { getUserById } from '@/data/user';
+import { db } from '@/lib/db';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import NextAuth from 'next-auth';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
-    signIn: "/auth/login",
-    error: "/auth/error",
+    signIn: '/auth/login',
+    error: '/auth/error',
   },
   events: {
     async linkAccount({ user }) {
@@ -21,7 +21,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   callbacks: {
     async signIn({ user, account }) {
-      if (account?.provider !== "credentials") return true;
+      if (account?.provider !== 'credentials') return true;
 
       if (!user.id) return false;
 
@@ -77,6 +77,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
   },
   adapter: PrismaAdapter(db),
-  session: { strategy: "jwt" },
+  session: { strategy: 'jwt' },
   ...authConfig,
 });

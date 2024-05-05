@@ -1,5 +1,5 @@
-import { NewVerificationForm } from "@/components/auth/new-verification-form";
-import { NextPage } from "next";
+import { NewVerificationForm } from '@/components/auth/new-verification-form';
+import { NextPage } from 'next';
 
 const Page: NextPage = ({}) => {
   return <NewVerificationForm />;

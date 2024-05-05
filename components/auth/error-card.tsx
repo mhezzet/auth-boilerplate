@@ -1,4 +1,4 @@
-import { CardContainer } from "@/components/auth/card-container";
+import { CardContainer } from '@/components/auth/card-container';
 
 interface IErrorCard {}
 

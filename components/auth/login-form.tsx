@@ -1,43 +1,52 @@
-"use client";
-import { login } from "@/actions/login";
-import { CardContainer } from "@/components/auth/card-container";
-import { FormErrors } from "@/components/form-errors";
-import { FormSuccess } from "@/components/form-success";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { LoginSchema } from "@/schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+'use client';
+import { login } from '@/actions/login';
+import { CardContainer } from '@/components/auth/card-container';
+import { FormErrors } from '@/components/form-errors';
+import { FormSuccess } from '@/components/form-success';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { LoginSchema } from '@/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useState, useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
 interface ILoginForm {}
 
 export const LoginForm: React.FC<ILoginForm> = ({}) => {
   const [isPending, startTransition] = useTransition();
-  const [errorMessage, setErrorMessage] = useState<string | undefined>("");
-  const [successMessage, setSuccessMessage] = useState<string | undefined>("");
+  const [errorMessage, setErrorMessage] = useState<string | undefined>('');
+  const [successMessage, setSuccessMessage] = useState<string | undefined>('');
   const [showTwoFactor, setShowTwoFactor] = useState(false);
   const searchParams = useSearchParams();
   const urlLinAccountError =
-    searchParams.get("error") === "OAuthAccountNotLinked" ? "Email already in use with different provider!" : "";
-  const callbackUrl = searchParams.get("callbackUrl");
+    searchParams.get('error') === 'OAuthAccountNotLinked'
+      ? 'Email already in use with different provider!'
+      : '';
+  const callbackUrl = searchParams.get('callbackUrl');
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
     shouldUnregister: false,
   });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    setErrorMessage("");
-    setSuccessMessage("");
+    setErrorMessage('');
+    setSuccessMessage('');
 
     startTransition(async () => {
       const response = await login(values, callbackUrl);
@@ -53,11 +62,11 @@ export const LoginForm: React.FC<ILoginForm> = ({}) => {
       }
 
       if (response?.email) {
-        form.setValue("email", response?.email);
+        form.setValue('email', response?.email);
       }
 
       if (response?.password) {
-        form.setValue("password", response?.password);
+        form.setValue('password', response?.password);
       }
 
       if (response?.twoFactor) {
@@ -131,7 +140,7 @@ export const LoginForm: React.FC<ILoginForm> = ({}) => {
             <FormErrors message={errorMessage || urlLinAccountError} />
             <FormSuccess message={successMessage} />
             <Button disabled={isPending} type="submit" className="w-full">
-              {showTwoFactor ? "Confirm" : "Login"}
+              {showTwoFactor ? 'Confirm' : 'Login'}
             </Button>
           </div>
         </form>

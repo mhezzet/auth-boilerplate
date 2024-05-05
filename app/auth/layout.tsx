@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { NextPage } from 'next';
 
 interface Props {
   children: React.ReactNode;
@@ -6,7 +6,7 @@ interface Props {
 
 const AuthLayout: NextPage<Props> = ({ children }) => {
   return (
-    <div className="h-full flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-800">
+    <div className="flex h-full items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-800">
       {children}
     </div>
   );

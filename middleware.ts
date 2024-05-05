@@ -1,6 +1,12 @@
-import authConfig from "@/auth.config";
-import { DEFAULT_LOGIN_REDIRECT, DEFAULT_NOT_AUTH_REDIRECT, apiAuthPrefix, authRoutes, publicRoutes } from "@/routes";
-import NextAuth from "next-auth";
+import authConfig from '@/auth.config';
+import {
+  DEFAULT_LOGIN_REDIRECT,
+  DEFAULT_NOT_AUTH_REDIRECT,
+  apiAuthPrefix,
+  authRoutes,
+  publicRoutes,
+} from '@/routes';
+import NextAuth from 'next-auth';
 
 const { auth } = NextAuth(authConfig);
 
@@ -33,12 +39,14 @@ export default auth((req) => {
 
     const encodedCallbackUrl = encodeURIComponent(callbackUrl);
 
-    return Response.redirect(new URL(`${DEFAULT_NOT_AUTH_REDIRECT}?callbackUrl=${encodedCallbackUrl}`, nextUrl));
+    return Response.redirect(
+      new URL(`${DEFAULT_NOT_AUTH_REDIRECT}?callbackUrl=${encodedCallbackUrl}`, nextUrl),
+    );
   }
 
   return;
 });
 
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
 };

@@ -1,42 +1,49 @@
-"use client";
-import { register } from "@/actions/register";
-import { CardContainer } from "@/components/auth/card-container";
-import { FormErrors } from "@/components/form-errors";
-import { FormSuccess } from "@/components/form-success";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { RegisterSchema } from "@/schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+'use client';
+import { register } from '@/actions/register';
+import { CardContainer } from '@/components/auth/card-container';
+import { FormErrors } from '@/components/form-errors';
+import { FormSuccess } from '@/components/form-success';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { RegisterSchema } from '@/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
 interface IRegisterForm {}
 
 export const RegisterForm: React.FC<IRegisterForm> = ({}) => {
   const [isPending, startTransition] = useTransition();
-  const [errorMessage, setErrorMessage] = useState<string | undefined>("");
-  const [successMessage, setSuccessMessage] = useState<string | undefined>("");
+  const [errorMessage, setErrorMessage] = useState<string | undefined>('');
+  const [successMessage, setSuccessMessage] = useState<string | undefined>('');
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      email: "",
-      password: "",
-      name: "",
+      email: '',
+      password: '',
+      name: '',
     },
   });
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-    setErrorMessage("");
-    setSuccessMessage("");
+    setErrorMessage('');
+    setSuccessMessage('');
 
     startTransition(() =>
       register(values).then((data) => {
         setErrorMessage(data.error);
         setSuccessMessage(data.success);
-      })
+      }),
     );
   };
 

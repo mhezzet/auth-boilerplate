@@ -1,5 +1,5 @@
-"use server";
+'use server';
 
-import { signOut } from "@/auth";
+import { signOut } from '@/auth';
 
-export const logout = () => signOut({ redirect: true, redirectTo: "/auth/login" });
+export const logout = () => signOut({ redirect: true, redirectTo: '/auth/login' });
