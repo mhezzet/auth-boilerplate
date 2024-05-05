@@ -1,7 +1,7 @@
+import { Navbar } from "@/app/(protected)/_components/navbar";
 import { auth } from "@/auth";
 import { NextPage } from "next";
 import { SessionProvider } from "next-auth/react";
-import { Navbar } from "./_components/navbar";
 
 const ProtectedLayout: NextPage<Readonly<{ children: React.ReactNode }>> = async ({ children }) => {
   const session = await auth();

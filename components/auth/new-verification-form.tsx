@@ -1,11 +1,11 @@
 "use client";
-import { BeatLoader } from "react-spinners";
-import { CardContainer } from "@/components/auth/card-container";
-import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
 import { newVerification } from "@/actions/verification";
+import { CardContainer } from "@/components/auth/card-container";
 import { FormErrors } from "@/components/form-errors";
 import { FormSuccess } from "@/components/form-success";
+import { useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { BeatLoader } from "react-spinners";
 
 interface INewVerificationForm {}
 

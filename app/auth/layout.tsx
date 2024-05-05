@@ -1,4 +1,3 @@
-import { db } from "@/lib/db";
 import { NextPage } from "next";
 
 interface Props {
